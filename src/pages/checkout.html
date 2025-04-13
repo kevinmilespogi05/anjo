@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfordaShop - Checkout</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/checkout.css">
+    <link rel="stylesheet" href="src/css/base.css">
+    <link rel="stylesheet" href="src/css/components.css">
+    <link rel="stylesheet" href="src/css/layout.css">
+</head>
+<body>
+    <header class="top-header"></header>
+
+    <div class="main-wrapper">
+        <nav class="main-nav">
+            <h1 class="brand-logo">AfordaShop</h1>
+
+            <div class="nav-content">
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link">Home</a></li>
+                    <li><a href="#" class="nav-link">Contact</a></li>
+                    <li><a href="#" class="nav-link">About</a></li>
+                    <li><a href="#" class="nav-link">Sign Up</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-actions">
+                <form class="search-form" role="search">
+                    <div class="search-wrapper">
+                        <input
+                            type="search"
+                            placeholder="What are you looking for?"
+                            class="search-input"
+                            aria-label="Search products"
+                        />
+                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/dced85d64ac4fa12ce99d1ed0ca371cdcdacf3e0?placeholderIfAbsent=true&apiKey=c920ee099cd94450ad47ca730611f9cd" alt="Search" class="search-icon" />
+                    </div>
+                </form>
+
+                <div class="cart-wrapper">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/3cb4c593221ac4a71074068047957e8e23f48213?placeholderIfAbsent=true&apiKey=c920ee099cd94450ad47ca730611f9cd" alt="Shopping cart" class="cart-icon" />
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <hr class="divider" />
+
+    <main class="checkout-content">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol>
+                <li>Product</li>
+                <li aria-current="page">CheckOut</li>
+            </ol>
+        </nav>
+
+        <h2 class="section-title">Billing Details</h2>
+
+        <div class="checkout-grid">
+            <form class="billing-form">
+                <div class="form-group">
+                    <label for="firstName" class="form-label">
+                        First Name<span class="required">*</span>
+                    </label>
+                    <input type="text" id="firstName" class="form-input" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="companyName" class="form-label">Company Name</label>
+                    <input type="text" id="companyName" class="form-input" />
+                </div>
+
+                <div class="form-group">
+                    <label for="streetAddress" class="form-label">
+                        Street Address<span class="required">*</span>
+                    </label>
+                    <input type="text" id="streetAddress" class="form-input" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="apartment" class="form-label">Apartment, floor, etc. (optional)</label>
+                    <input type="text" id="apartment" class="form-input" />
+                </div>
+
+                <div class="form-group">
+                    <label for="townCity" class="form-label">
+                        Town/City<span class="required">*</span>
+                    </label>
+                    <input type="text" id="townCity" class="form-input" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="form-label">
+                        Phone Number<span class="required">*</span>
+                    </label>
+                    <input type="tel" id="phone" class="form-input" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        Email Address<span class="required">*</span>
+                    </label>
+                    <input type="email" id="email" class="form-input" required />
+                </div>
+            </form>
+
+            <aside class="order-summary">
+                <div class="summary-content">
+                    <div class="summary-section">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span class="amount">500</span>
+                        </div>
+                        <hr class="summary-divider" />
+                    </div>
+
+                    <div class="summary-section">
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span>Free</span>
+                        </div>
+                        <hr class="summary-divider" />
+                    </div>
+
+                    <div class="summary-total">
+                        <span>Total:</span>
+                        <span class="amount">500</span>
+                    </div>
+
+                    <div class="payment-method">Cash on delivery</div>
+
+                    <button type="submit" class="place-order-btn">Place Order</button>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <section class="footer-section">
+                <h2 class="brand-logo">AfordaShop</h2>
+                <h3 class="footer-title">Subscribe</h3>
+                <p class="footer-text">Get 10% off your first order</p>
+            </section>
+
+            <section class="footer-section">
+                <h3 class="footer-title">Support</h3>
+                <address class="footer-address">
+                    <p>
+                        Tapinac Oval Sports Complex, Donor St., East Tapinac, Olongapo,
+                        Philippines
+                    </p>
+                    <p>exclusive@gmail.com</p>
+                    <p>+88015-88888-9999</p>
+                </address>
+            </section>
+
+            <section class="footer-section">
+                <h3 class="footer-title">Account</h3>
+                <nav class="footer-nav">
+                    <ul>
+                        <li><a href="#">My Account</a></li>
+                        <li><a href="#">Login / Register</a></li>
+                        <li><a href="#">Cart</a></li>
+                        <li><a href="#">Wishlist</a></li>
+                        <li><a href="#">Shop</a></li>
+                    </ul>
+                </nav>
+            </section>
+
+            <section class="footer-section">
+                <h3 class="footer-title">Quick Link</h3>
+                <nav class="footer-nav">
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms Of Use</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </nav>
+            </section>
+
+            <section class="footer-section">
+                <h3 class="footer-title">Download App</h3>
+                <p class="app-text">Save $3 with App New User Only</p>
+                <div class="app-downloads">
+                    <div class="app-icons">
+                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/836cee14c62b5e1c952b04cfa608ce7a779d7695?placeholderIfAbsent=true&apiKey=c920ee099cd94450ad47ca730611f9cd" alt="Download on App Store" class="app-store" />
+                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b15e0e550a267d49b344afaf2304b92946b466f1?placeholderIfAbsent=true&apiKey=c920ee099cd94450ad47ca730611f9cd" alt="Get it on Google Play" class="play-store" />
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="footer-bottom">
+            <hr class="footer-divider" />
+            <div class="copyright">
+                <span class="copyright-icon"></span>
+                <p>Copyright SnapCart 2025. All right reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/checkout.js"></script>
+</body>
+</html> 
