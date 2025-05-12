@@ -10,36 +10,18 @@
     <div class="signup">
       <div class="top-header"></div>
 
-      <header class="header">
-        <div class="header__content">
-          <div class="header__logo"></div>
-          <div class="header__nav">
-            <div class="header__nav-item"></div>
-            <div class="header__nav-item">
-              <a href="index.html" style="text-decoration: none; color: inherit;">Home</a>
-            </div>
-            <div class="header__nav-item">
-              <a href="contact.html" style="text-decoration: none; color: inherit;">Contact</a>
-            </div>
-            <div class="header__nav-item">About</div>
-            <div class="header__nav-item header__nav-signup">
-              <a href="signup.html" style="text-decoration: none; color: inherit;">
-                <div>Sign Up</div>
-                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c006d2708f7fe6ae5660a026f4fbbcdd214c9c43?placeholderIfAbsent=true&apiKey=c920ee099cd94450ad47ca730611f9cd" alt="Sign up indicator" />
-              </a>
-            </div>
-          </div>
+      <nav class="main-nav minimal-nav">
+        <div class="nav-content">
+          <div class="brand">AfordaShop</div>
+          <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+          </ul>
         </div>
-        <div class="search">
-          <div class="search__container">
-            <div class="search__input">What are you looking for?</div>
-            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/dced85d64ac4fa12ce99d1ed0ca371cdcdacf3e0?placeholderIfAbsent=true&apiKey=c920ee099cd94450ad47ca730611f9cd" alt="Search" class="search__icon" />
-          </div>
-        </div>
-      </header>
-
-      <div class="brand-name">AfordaShop</div>
-      <div class="divider"></div>
+      </nav>
 
       <main class="main-content">
         <div class="content-container">
@@ -68,7 +50,7 @@
                         <input type="checkbox" name="remember" />
                         <span>Remember me</span>
                       </label>
-                      <a href="#" class="forgot-password">Forgot Password?</a>
+                      <a href="signup.html" class="forgot-password">Forgot Password?</a>
                     </div>
                   </div>
                   <button type="submit" class="form__submit">Log In</button>           

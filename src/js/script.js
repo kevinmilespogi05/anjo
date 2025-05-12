@@ -52,8 +52,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize all functionality
     if (form) {
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            console.log('Form submitted');
+            // Only prevent default if it's not the forgot password link
+            if (!e.target.classList.contains('forgot-password')) {
+                e.preventDefault();
+                console.log('Form submitted');
+            }
         });
     }
 
@@ -397,11 +400,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const forgotPasswordLink = loginForm.querySelector('.forgot-password');
         if (forgotPasswordLink) {
             forgotPasswordLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                // Here you would implement password reset functionality
-                console.log('Forgot password clicked');
-                // Redirect to password reset page
-                // window.location.href = '/reset-password';
+                // Remove preventDefault to allow the link to work
+                window.location.href = 'signup.html';
             });
         }
 

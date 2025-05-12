@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details - AfordaShop</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@600;700&family=Italiana&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .product-details-container {
+      max-width: 800px;
+      margin: 60px auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      padding: 32px;
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+    .product-details-image {
+      width: 320px;
+      height: 320px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      flex-shrink: 0;
+    }
+    .product-details-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .product-details-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #222;
+    }
+    .product-details-desc {
+      color: #555;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+    .product-details-meta {
+      color: #888;
+      font-size: 1rem;
+      margin-bottom: 18px;
+    }
+    .checkout-btn {
+      background: #d4a373;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 18px;
+      transition: background 0.2s;
+    }
+    .checkout-btn:hover {
+      background: #a97a3c;
+    }
+    .checkout-success {
+      color: #388e3c;
+      font-weight: 600;
+      margin-top: 18px;
+      font-size: 1.1rem;
+    }
+    @media (max-width: 900px) {
+      .product-details-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 24px;
+        gap: 24px;
+      }
+      .product-details-image {
+        width: 100%;
+        max-width: 340px;
+        height: auto;
+      }
+      .product-details-info {
+        width: 100%;
+        align-items: flex-start;
+      }
+    }
+    @media (max-width: 600px) {
+      .product-details-container {
+        margin: 24px 0;
+        padding: 12px;
+        border-radius: 8px;
+      }
+      .product-details-title {
+        font-size: 1.3rem;
+      }
+      .checkout-btn {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="main-nav minimal-nav">
+    <div class="nav-content">
+      <div class="brand">AfordaShop</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Sign Up</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="product-details-container" id="product-details">
+      <!-- Product details will be injected here by JS -->
+    </div>
+  </main>
+  <script>
+    // Hardcoded product data
+    const products = [
+      {
+        id: 1,
+        name: "Classic Bag",
+        image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80",
+        desc: "A timeless leather bag perfect for everyday use.",
+        meta: "Leather, Brown"
+      },
+      {
+        id: 2,
+        name: "White Shirt",
+        image: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80",
+        desc: "A classic white cotton shirt, suitable for all occasions.",
+        meta: "Cotton, Unisex"
+      },
+      {
+        id: 3,
+        name: "Jacket",
+        image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
+        desc: "Stylish blue denim jacket for a modern look.",
+        meta: "Denim, Blue"
+      }
+    ];
+    // Get product id from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = parseInt(urlParams.get('id'));
+    const product = products.find(p => p.id === productId);
+    const detailsDiv = document.getElementById('product-details');
+    if (product) {
+      detailsDiv.innerHTML = `
+        <img class="product-details-image" src="${product.image}" alt="${product.name}" />
+        <div class="product-details-info">
+          <div class="product-details-title">${product.name}</div>
+          <div class="product-details-desc">${product.desc}</div>
+          <div class="product-details-meta">${product.meta}</div>
+          <button class="checkout-btn" id="checkoutBtn">Checkout</button>
+          <div class="checkout-success" id="checkoutSuccess" style="display:none;">Thank you for your purchase!</div>
+        </div>
+      `;
+      document.getElementById('checkoutBtn').onclick = function() {
+        document.getElementById('checkoutSuccess').style.display = 'block';
+        this.disabled = true;
+        this.innerText = 'Checked Out';
+      };
+    } else {
+      detailsDiv.innerHTML = '<div>Product not found.</div>';
+    }
+  </script>
+</body>
+</html> 
