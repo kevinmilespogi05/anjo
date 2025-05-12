@@ -15,63 +15,79 @@
     <nav class="main-nav minimal-nav">
       <div class="nav-content">
         <div class="brand">AfordaShop</div>
+        <div class="search-bar">
+          <input type="text" placeholder="Search products...">
+          <button><i class="fas fa-search"></i></button>
+        </div>
         <ul class="nav-links">
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li><a href="login.html">Login</a></li>
           <li><a href="signup.html">Sign Up</a></li>
+          <li><a href="cart.html" class="cart-icon"><i class="fas fa-shopping-cart"></i> <span class="cart-count">0</span></a></li>
         </ul>
-            </div>
+      </div>
     </nav>
     <main>
-      <section class="hero-section">
-        <div class="hero-text-block">
-          <div class="hero-slogan">GET OUT OF YOUR</div>
-          <div class="hero-title">Comfort<br><span class="zone">zone</span></div>
-        </div>
-        <div class="hero-image-block">
-          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=facearea&w=600&q=80" alt="Model" class="hero-model-img" />
+      <section class="products-section">
+        <div class="filters-sidebar">
+          <h3>Categories</h3>
+          <ul>
+            <li><a href="#" data-category="Electronics"><i class="fas fa-laptop"></i> Electronics</a></li>
+            <li><a href="#" data-category="Clothing"><i class="fas fa-tshirt"></i> Clothing</a></li>
+            <li><a href="#" data-category="Home & Kitchen"><i class="fas fa-home"></i> Home & Kitchen</a></li>
+            <li><a href="#" data-category="Books"><i class="fas fa-book"></i> Books</a></li>
+            <li><a href="#" data-category="Smartphones"><i class="fas fa-mobile-alt"></i> Smartphones</a></li>
+            <li><a href="#" data-category="Audio"><i class="fas fa-headphones"></i> Audio</a></li>
+            <li><a href="#" data-category="Gaming"><i class="fas fa-gamepad"></i> Gaming</a></li>
+            <li><a href="#" data-category="Sports"><i class="fas fa-dumbbell"></i> Sports</a></li>
+            <li><a href="#" data-category="Automotive"><i class="fas fa-car"></i> Automotive</a></li>
+            <li><a href="#" data-category="Baby Products"><i class="fas fa-baby"></i> Baby Products</a></li>
+          </ul>
+          <h3>Price Range</h3>
+          <div class="price-range">
+            <input type="range" min="0" max="1000" value="1000" class="price-slider">
+            <div class="price-inputs">
+              <input type="number" placeholder="Min" class="min-price" min="0" max="1000">
+              <input type="number" placeholder="Max" class="max-price" min="0" max="1000" value="1000">
+            </div>
           </div>
-        </section>
-      <section class="products-blocks">
-        <h2>Products</h2>
-        <div class="products-grid">
-          <a class="product-card" href="product.html?id=1">
-            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Classic Bag" />
-            <div class="product-title">Classic Bag<br><span>Leather, Brown</span></div>
-          </a>
-          <a class="product-card" href="product.html?id=2">
-            <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80" alt="White Shirt" />
-            <div class="product-title">White Shirt<br><span>Cotton, Unisex</span></div>
-          </a>
-          <a class="product-card" href="product.html?id=3">
-            <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Jacket" />
-            <div class="product-title">Jacket<br><span>Denim, Blue</span></div>
-          </a>
+          <h3>Rating</h3>
+          <div class="rating-filter">
+            <label><input type="checkbox" value="4"> 4★ & Up</label>
+            <label><input type="checkbox" value="3"> 3★ & Up</label>
+            <label><input type="checkbox" value="2"> 2★ & Up</label>
+            <label><input type="checkbox" value="1"> 1★ & Up</label>
+          </div>
+          <h3>Availability</h3>
+          <div class="availability-filter">
+            <label><input type="checkbox" value="in-stock"> In Stock</label>
+            <label><input type="checkbox" value="prime-delivery"> Prime Delivery</label>
+            <label><input type="checkbox" value="free-shipping"> Free Shipping</label>
+          </div>
+        </div>
+        <div class="products-container">
+          <div class="products-header">
+            <h2>All Products</h2>
+            <div class="sort-options">
+              <select>
+                <option value="featured">Sort by: Featured</option>
+                <option value="price: low to high">Price: Low to High</option>
+                <option value="price: high to low">Price: High to Low</option>
+                <option value="customer rating">Customer Rating</option>
+                <option value="newest arrivals">Newest Arrivals</option>
+                <option value="best selling">Best Selling</option>
+              </select>
+            </div>
+          </div>
+          <div class="products-grid">
+            <!-- Products will be dynamically loaded here -->
+          </div>
         </div>
       </section>
-      <section class="featured-products-section">
-        <h2>Featured Products</h2>
-        <div class="featured-products-grid">
-          <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Bag" />
-            <div class="product-title">Classic Bag</div>
-          </div>
-          <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80" alt="Shirt" />
-            <div class="product-title">White Shirt</div>
-          </div>
-          <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=facearea&w=400&q=80" alt="Sneakers" />
-            <div class="product-title">Sneakers</div>
-          </div>
-          <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Jacket" />
-            <div class="product-title">Jacket</div>
-          </div>
-          </div>
-        </section>
-      </main>
+    </main>
+    <script src="../js/filters.js"></script>
+    <script src="../js/ecommerce.js"></script>
   </body>
 </html>

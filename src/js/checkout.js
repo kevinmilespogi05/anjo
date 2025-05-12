@@ -137,7 +137,8 @@ if (checkoutForm) {
             
             // Show success message
             alert('Order placed successfully!');
-            window.location.href = '/order-confirmation';
+            localStorage.removeItem('cart'); // Clear the cart
+            window.location.href = 'index.html'; // Redirect to home page
             
         } catch (error) {
             console.error('Error placing order:', error);
@@ -264,89 +265,48 @@ function updatePrices() {
 // Initialize price formatting
 updatePrices();
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize checkout
-    function initCheckout() {
-        // Save original button text
-        if (placeOrderBtn) {
-            placeOrderBtn.setAttribute('data-original-text', placeOrderBtn.textContent);
-        }
+document.addEventListener('DOMContentLoaded', () => {
+    const subtotalElement = document.querySelector('.subtotal');
+    const shippingElement = document.querySelector('.shipping');
+    const taxElement = document.querySelector('.tax');
+    const totalElement = document.querySelector('.total');
 
-        // Handle shipping method selection
-        if (shippingMethods.length > 0) {
-            shippingMethods.forEach(method => {
-                method.addEventListener('change', updateShipping);
-            });
-        }
+    function updateOrderSummary() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const shipping = subtotal > 0 ? 10 : 0;
+        const tax = subtotal * 0.1; // 10% tax
+        const total = subtotal + shipping + tax;
 
-        // Handle payment method selection
-        if (paymentMethods.length > 0) {
-            paymentMethods.forEach(method => {
-                method.addEventListener('change', updatePayment);
-            });
-        }
-
-        // Handle form submission
-        if (checkoutForm) {
-            checkoutForm.addEventListener('submit', handleCheckout);
-        }
+        subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+        shippingElement.textContent = shipping > 0 ? `$${shipping.toFixed(2)}` : 'Free';
+        taxElement.textContent = `$${tax.toFixed(2)}`;
+        totalElement.textContent = `$${total.toFixed(2)}`;
     }
 
-    // Update shipping method
-    function updateShipping(e) {
-        const method = e.target;
-        if (method.checked) {
-            // Update shipping cost
-            const shippingCost = parseFloat(method.dataset.cost || 0);
-            updateOrderSummary({ shipping: shippingCost });
-        }
-    }
+    // Update summary when page loads
+    updateOrderSummary();
 
-    // Update payment method
-    function updatePayment(e) {
-        const method = e.target;
-        if (method.checked) {
-            // Show/hide payment form fields based on method
-            const paymentForms = document.querySelectorAll('.payment-form');
-            paymentForms.forEach(form => form.style.display = 'none');
-            
-            const selectedForm = document.querySelector(`.${method.value}-form`);
-            if (selectedForm) {
-                selectedForm.style.display = 'block';
-            }
-        }
-    }
+    // Handle form submission
+    const billingForm = document.querySelector('.billing-form');
+    const placeOrderBtn = document.querySelector('.place-order-btn');
 
-    // Handle checkout submission
-    function handleCheckout(e) {
+    placeOrderBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        
+        if (billingForm.checkValidity()) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
 
-        // Validate form
-        if (!window.utils.validateForm(checkoutForm)) {
-            return;
+            // Here you would typically send the order to your backend
+            alert('Order placed successfully!');
+            localStorage.removeItem('cart'); // Clear the cart
+            window.location.href = 'index.html'; // Redirect to home page
+        } else {
+            billingForm.reportValidity();
         }
-
-        // Set loading state
-        window.utils.setLoadingState(placeOrderBtn, true);
-
-        // Simulate API call
-        setTimeout(() => {
-            // Reset loading state
-            window.utils.setLoadingState(placeOrderBtn, false);
-
-            // Show success message
-            const successMessage = document.createElement('div');
-            successMessage.className = 'success-message';
-            successMessage.textContent = 'Order placed successfully!';
-            checkoutForm.appendChild(successMessage);
-
-            // Redirect to thank you page
-            setTimeout(() => {
-                window.location.href = '/thank-you.html';
-            }, 2000);
-        }, 1500);
-    }
-
-    // Initialize checkout
-    initCheckout();
+    });
 }); 
