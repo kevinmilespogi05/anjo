@@ -19,9 +19,9 @@ window.utils = {
 
   // Format price with currency symbol
   formatPrice: (price) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-PH', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'PHP'
     }).format(price);
   },
 
@@ -184,9 +184,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Product data (you can replace this with your actual product data or fetch from an API)
 const products = {
-    '1': { id: '1', name: 'Product 1', price: 29.99, image: '../assets/images/product1.jpg' },
-    '2': { id: '2', name: 'Product 2', price: 39.99, image: '../assets/images/product2.jpg' },
-    '3': { id: '3', name: 'Product 3', price: 49.99, image: '../assets/images/product3.jpg' }
+    '1': { id: '1', name: 'Wireless Headphones', price: 1499.00, image: '../assets/images/product1.jpg' },
+    '2': { id: '2', name: 'Smart Watch', price: 2499.00, image: '../assets/images/product2.jpg' },
+    '3': { id: '3', name: 'Laptop Backpack', price: 799.00, image: '../assets/images/product3.jpg' }
 };
 
 function getProductDetails(productId) {

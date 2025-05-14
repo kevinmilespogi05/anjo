@@ -327,6 +327,44 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Helper function to show error messages using SweetAlert2
+    function showError(form, message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: message,
+            timer: 3000,
+            showConfirmButton: false
+        });
+    }
+
+    // Helper function to show success messages using SweetAlert2
+    function showSuccess(message, timer = 1500) {
+        return Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: message,
+            timer: timer,
+            showConfirmButton: false
+        });
+    }
+
+    // Helper function to show notifications using SweetAlert2
+    function showNotification(message, icon = 'success') {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+
+        Toast.fire({
+            icon: icon,
+            title: message
+        });
+    }
+
     // Initialize login form
     if (loginForm) {
         const emailOrPhoneInput = loginForm.querySelector('input[name="emailOrPhone"]');
@@ -349,11 +387,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                // Show loading state
-                const submitBtn = loginForm.querySelector('.form__submit');
-                const originalText = submitBtn.textContent;
-                submitBtn.textContent = 'Logging in...';
-                submitBtn.disabled = true;
+                // Show loading state using SweetAlert2
+                Swal.fire({
+                    title: 'Logging in...',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
 
                 // Here you would typically make an API call to your backend
                 // For now, we'll simulate a successful login
@@ -366,16 +408,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.removeItem('rememberedEmail');
                 }
 
-                // Redirect to home page or dashboard
-                window.location.href = '/';
+                // Show success message and redirect
+                await showSuccess('Login successful!');
+                window.location.href = 'index.html';
 
             } catch (error) {
                 showError(loginForm, 'Invalid email/phone or password');
-            } finally {
-                // Reset button state
-                const submitBtn = loginForm.querySelector('.form__submit');
-                submitBtn.textContent = 'Log In';
-                submitBtn.disabled = false;
             }
         });
 
@@ -385,11 +423,7 @@ document.addEventListener('DOMContentLoaded', function() {
             googleLoginBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
                 try {
-                    // Here you would implement Google OAuth
-                    // For now, we'll simulate the process
-                    console.log('Initiating Google login...');
-                    // Redirect to Google OAuth page
-                    // window.location.href = 'YOUR_GOOGLE_OAUTH_URL';
+                    showNotification('Google login coming soon...', 'info');
                 } catch (error) {
                     showError(loginForm, 'Error with Google login');
                 }
@@ -419,35 +453,124 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             const formData = {
-                name: signupForm.name.value,
-                emailOrPhone: signupForm.emailOrPhone.value,
-                password: signupForm.password.value,
+                name: signupForm.name.value.trim(),
+                emailOrPhone: signupForm.emailOrPhone.value.trim(),
+                password: signupForm.password.value.trim(),
+                confirmPassword: signupForm.confirmPassword.value.trim(),
                 terms: signupForm.terms.checked
             };
 
-            // Basic validation
-            if (!formData.terms) {
-                showError('Please agree to the Terms of Service and Privacy Policy');
+            // Validate name
+            if (!formData.name) {
+                showError(signupForm, 'Please enter your name');
                 return;
             }
 
-            if (formData.password.length < 6) {
-                showError('Password must be at least 6 characters long');
+            if (!utils.patterns.name.test(formData.name)) {
+                showError(signupForm, 'Please enter a valid name (letters and spaces only)');
+                return;
+            }
+
+            // Validate email/phone
+            if (!formData.emailOrPhone) {
+                showError(signupForm, 'Please enter your email or phone number');
+                return;
+            }
+
+            const isEmail = utils.patterns.email.test(formData.emailOrPhone);
+            const isPhone = utils.patterns.phone.test(formData.emailOrPhone);
+
+            if (!isEmail && !isPhone) {
+                showError(signupForm, 'Please enter a valid email address or phone number');
+                return;
+            }
+
+            // Validate password
+            if (!formData.password) {
+                showError(signupForm, 'Please enter a password');
+                return;
+            }
+
+            if (formData.password.length < 8) {
+                showError(signupForm, 'Password must be at least 8 characters long');
+                return;
+            }
+
+            if (!utils.patterns.password.test(formData.password)) {
+                showError(signupForm, 'Password must contain at least one letter and one number');
+                return;
+            }
+
+            if (formData.password !== formData.confirmPassword) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Password Mismatch',
+                    text: 'The passwords you entered do not match',
+                    confirmButtonColor: '#DB4444'
+                });
+                return;
+            }
+
+            // Validate terms
+            if (!formData.terms) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Terms & Conditions',
+                    text: 'Please agree to the Terms of Service and Privacy Policy to continue',
+                    confirmButtonColor: '#DB4444'
+                });
                 return;
             }
 
             try {
-                // Here you would typically send the data to your backend
-                // For now, we'll just store it in localStorage
+                // Show loading state with a custom design
+                Swal.fire({
+                    title: 'Creating your account...',
+                    html: 'Please wait while we set up your account',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    background: '#fff',
+                    customClass: {
+                        title: 'swal-title',
+                        popup: 'swal-popup'
+                    }
+                });
+
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Store user data
                 localStorage.setItem('userData', JSON.stringify({
                     name: formData.name,
                     emailOrPhone: formData.emailOrPhone
                 }));
 
-                // Redirect to login page after successful signup
+                // Show success message with a nice animation
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Welcome to AfordaShop!',
+                    text: 'Your account has been created successfully',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    background: '#fff',
+                    customClass: {
+                        popup: 'swal-popup',
+                        title: 'swal-title'
+                    }
+                });
+
+                // Redirect to login page
                 window.location.href = 'login.html';
             } catch (error) {
-                showError('An error occurred. Please try again.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'An error occurred while creating your account. Please try again.',
+                    confirmButtonColor: '#DB4444'
+                });
             }
         });
     }
@@ -459,26 +582,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Here you would implement Google OAuth
             alert('Google signup functionality will be implemented soon');
         });
-    }
-
-    // Helper function to show error messages
-    function showError(form, message) {
-        // Remove existing error message
-        const existingError = form.querySelector('.error-message');
-        if (existingError) {
-            existingError.remove();
-        }
-
-        // Create and show new error message
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = message;
-        form.insertBefore(errorDiv, form.firstChild);
-
-        // Remove error message after 3 seconds
-        setTimeout(() => {
-            errorDiv.remove();
-        }, 3000);
     }
 
     // Initialize all functionality
@@ -503,15 +606,7 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('cartItems', JSON.stringify(cartItems));
             updateCartCount();
             
-            // Show success message
-            const successMessage = document.createElement('div');
-            successMessage.className = 'success-message';
-            successMessage.textContent = 'Added to cart successfully!';
-            document.body.appendChild(successMessage);
-            
-            setTimeout(() => {
-                successMessage.remove();
-            }, 3000);
+            showNotification('Added to cart successfully!');
         }
     }
 
@@ -531,21 +626,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Remove from wishlist
             wishlistItems.splice(index, 1);
             wishlistBtn.classList.remove('active');
-            showNotification('Removed from wishlist');
+            showNotification('Removed from wishlist', 'info');
         }
         
         localStorage.setItem('wishlistItems', JSON.stringify(wishlistItems));
-    }
-
-    function showNotification(message) {
-        const notification = document.createElement('div');
-        notification.className = 'notification';
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
     }
 
     // Initialize cart count on page load

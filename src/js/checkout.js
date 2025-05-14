@@ -278,10 +278,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const tax = subtotal * 0.1; // 10% tax
         const total = subtotal + shipping + tax;
 
-        subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-        shippingElement.textContent = shipping > 0 ? `$${shipping.toFixed(2)}` : 'Free';
-        taxElement.textContent = `$${tax.toFixed(2)}`;
-        totalElement.textContent = `$${total.toFixed(2)}`;
+        subtotalElement.textContent = window.utils.formatPrice(subtotal);
+        shippingElement.textContent = shipping > 0 ? window.utils.formatPrice(shipping) : 'Free';
+        taxElement.textContent = window.utils.formatPrice(tax);
+        totalElement.textContent = window.utils.formatPrice(total);
     }
 
     // Update summary when page loads

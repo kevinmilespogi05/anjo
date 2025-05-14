@@ -52,8 +52,8 @@ function showQuickView(productId) {
                         <span>(${product.reviews} reviews)</span>
                     </div>
                     <div class="product-pricing">
-                        <span class="current-price">$${product.price.toFixed(2)}</span>
-                        ${product.originalPrice ? `<span class="original-price">$${product.originalPrice.toFixed(2)}</span>` : ''}
+                        <span class="current-price">₱${product.price.toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                        ${product.originalPrice ? `<span class="original-price">₱${product.originalPrice.toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>` : ''}
                     </div>
                     <p class="product-description">${product.description}</p>
                     <div class="product-stock">
@@ -70,7 +70,7 @@ function showQuickView(productId) {
                         <i class="fas fa-shopping-cart"></i> Add to Cart
                     </button>
                     <div class="quick-view-extra">
-                        <div class="quick-view-extra-item"><i class="fas fa-shipping-fast"></i> Free delivery on orders over $50</div>
+                        <div class="quick-view-extra-item"><i class="fas fa-shipping-fast"></i> Free delivery on orders over ₱5,000.00</div>
                         <div class="quick-view-extra-item"><i class="fas fa-undo"></i> 30-day return policy</div>
                     </div>
                 </div>
@@ -171,41 +171,35 @@ function addToCartFromQuickView(productId, quantity) {
 
 // Helper functions
 function getProductDetails(productId) {
-    const productCard = document.querySelector(`.product-card[data-product-id="${productId}"]`);
-    if (!productCard) return null;
-
-    const name = productCard.querySelector('.product-title').textContent;
-    const price = parseFloat(productCard.querySelector('.current-price').textContent.replace('$', ''));
-    const image = productCard.querySelector('.product-image img').src;
-    const description = productCard.querySelector('.product-description').textContent;
-    const rating = parseFloat(productCard.querySelector('.product-rating').dataset.rating || '0');
-    const reviews = parseInt(productCard.querySelector('.product-rating').dataset.reviews || '0');
-    const stock = parseInt(productCard.querySelector('.product-stock').dataset.stock || '0');
-    
-    // Get original price and discount if they exist
-    const originalPriceElement = productCard.querySelector('.original-price');
-    const discountElement = productCard.querySelector('.discount');
-    
-    const originalPrice = originalPriceElement ? 
-        parseFloat(originalPriceElement.textContent.replace('$', '')) : null;
-    const discount = discountElement ? 
-        parseInt(discountElement.textContent.replace('% OFF', '')) : null;
-
-    const inStock = stock > 0;
+    // Find the product in the catalog
+    const product = catalogProducts.find(p => p.id === parseInt(productId));
+    if (!product) return null;
 
     return {
         id: productId,
-        name,
-        price,
-        originalPrice,
-        discount,
-        image,
-        description,
-        rating,
-        reviews,
-        stock,
-        inStock
+        name: product.title,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.image,
+        description: product.description || getProductDescription(product.title),
+        rating: product.rating,
+        reviews: product.reviews,
+        stock: product.stockCount,
+        inStock: product.inStock
     };
+}
+
+// Helper function to get product description if not in catalog data
+function getProductDescription(title) {
+    const descriptions = {
+        "Wireless Headphones": "High-quality wireless headphones with noise cancellation and premium sound quality.",
+        "Smart Watch": "Feature-rich smartwatch with health monitoring and fitness tracking capabilities.",
+        "Laptop Backpack": "Durable and spacious laptop backpack with multiple compartments and water resistance.",
+        "Wireless Mouse": "Ergonomic wireless mouse with long battery life and precise tracking.",
+        "Mechanical Keyboard": "Premium mechanical keyboard with customizable RGB lighting and responsive switches.",
+        "Gaming Mouse Pad": "Large gaming mouse pad with smooth surface and non-slip rubber base."
+    };
+    return descriptions[title] || "Product description not available.";
 }
 
 function generateRatingStars(rating) {

@@ -1,11 +1,11 @@
 // Product data structure
-const products = [
+const catalogProducts = [
     {
         id: 1,
         title: "Wireless Headphones",
         category: "Audio",
-        price: 99.99,
-        originalPrice: 129.99,
+        price: 1499.00,
+        originalPrice: 1999.00,
         rating: 4.5,
         reviews: 128,
         inStock: true,
@@ -18,8 +18,8 @@ const products = [
         id: 2,
         title: "Smart Watch",
         category: "Electronics",
-        price: 199.99,
-        originalPrice: 249.99,
+        price: 2499.00,
+        originalPrice: 2999.00,
         rating: 4.8,
         reviews: 256,
         inStock: true,
@@ -32,8 +32,8 @@ const products = [
         id: 3,
         title: "Laptop Backpack",
         category: "Home & Kitchen",
-        price: 49.99,
-        originalPrice: 49.99,
+        price: 799.00,
+        originalPrice: 999.00,
         rating: 4.3,
         reviews: 89,
         inStock: true,
@@ -46,8 +46,8 @@ const products = [
         id: 4,
         title: "Wireless Mouse",
         category: "Electronics",
-        price: 29.99,
-        originalPrice: 39.99,
+        price: 499.00,
+        originalPrice: 699.00,
         rating: 4.6,
         reviews: 156,
         inStock: true,
@@ -60,8 +60,8 @@ const products = [
         id: 5,
         title: "Mechanical Keyboard",
         category: "Electronics",
-        price: 129.99,
-        originalPrice: 159.99,
+        price: 1999.00,
+        originalPrice: 2499.00,
         rating: 4.7,
         reviews: 203,
         inStock: true,
@@ -74,8 +74,8 @@ const products = [
         id: 6,
         title: "Gaming Mouse Pad",
         category: "Gaming",
-        price: 19.99,
-        originalPrice: 24.99,
+        price: 249.00,
+        originalPrice: 349.00,
         rating: 4.4,
         reviews: 78,
         inStock: true,
@@ -90,8 +90,7 @@ const products = [
 let filterState = {
     category: null,
     minPrice: 0,
-    maxPrice: 1000,
-    minRating: 0,
+    maxPrice: 0,
     inStock: false,
     primeDelivery: false,
     freeShipping: false,
@@ -103,13 +102,27 @@ const categoryLinks = document.querySelectorAll('.filters-sidebar ul li a');
 const priceSlider = document.querySelector('.price-slider');
 const minPriceInput = document.querySelector('.min-price');
 const maxPriceInput = document.querySelector('.max-price');
-const ratingCheckboxes = document.querySelectorAll('.rating-filter input');
 const availabilityCheckboxes = document.querySelectorAll('.availability-filter input');
 const sortSelect = document.querySelector('.sort-options select');
 const productsGrid = document.querySelector('.products-grid');
 
 // Event Listeners
 function initializeFilters() {
+    // Set initial price range to 0 (inactive state)
+    priceSlider.value = 0;
+    minPriceInput.value = '';  // Empty for placeholder to show
+    maxPriceInput.value = '';  // Empty for placeholder to show
+    filterState.minPrice = 0;
+    filterState.maxPrice = 0;
+    
+    // Update the display of min/max price inputs
+    function updatePriceDisplay() {
+        minPriceInput.setAttribute('placeholder', '₱0');
+        maxPriceInput.setAttribute('placeholder', '₱1,000');
+    }
+    
+    updatePriceDisplay();
+
     // Category filter
     categoryLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -122,28 +135,25 @@ function initializeFilters() {
 
     // Price range filter
     priceSlider.addEventListener('input', (e) => {
-        filterState.maxPrice = parseInt(e.target.value);
-        maxPriceInput.value = filterState.maxPrice;
+        const value = parseInt(e.target.value);
+        filterState.maxPrice = value;
+        maxPriceInput.value = value > 0 ? value : '';
+        minPriceInput.value = filterState.minPrice > 0 ? filterState.minPrice : '';
         applyFilters();
     });
 
     minPriceInput.addEventListener('change', (e) => {
-        filterState.minPrice = parseInt(e.target.value) || 0;
+        const value = parseInt(e.target.value) || 0;
+        filterState.minPrice = value;
+        minPriceInput.value = value > 0 ? value : '';
         applyFilters();
     });
 
     maxPriceInput.addEventListener('change', (e) => {
-        filterState.maxPrice = parseInt(e.target.value) || 1000;
+        const value = parseInt(e.target.value) || 0;
+        filterState.maxPrice = value;
+        maxPriceInput.value = value > 0 ? value : '';
         applyFilters();
-    });
-
-    // Rating filter
-    ratingCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', (e) => {
-            const rating = parseInt(e.target.parentElement.textContent);
-            filterState.minRating = e.target.checked ? rating : 0;
-            applyFilters();
-        });
     });
 
     // Availability filter
@@ -174,7 +184,7 @@ function initializeFilters() {
 
 // Filter and sort products
 function applyFilters() {
-    let filteredProducts = [...products];
+    let filteredProducts = [...catalogProducts];
 
     // Apply category filter
     if (filterState.category) {
@@ -183,15 +193,10 @@ function applyFilters() {
         );
     }
 
-    // Apply price filter
-    filteredProducts = filteredProducts.filter(product =>
-        product.price >= filterState.minPrice && product.price <= filterState.maxPrice
-    );
-
-    // Apply rating filter
-    if (filterState.minRating > 0) {
+    // Apply price filter only if maxPrice is greater than 0
+    if (filterState.maxPrice > 0) {
         filteredProducts = filteredProducts.filter(product =>
-            product.rating >= filterState.minRating
+            product.price >= filterState.minPrice && product.price <= filterState.maxPrice
         );
     }
 
@@ -213,9 +218,6 @@ function applyFilters() {
             break;
         case 'price: high to low':
             filteredProducts.sort((a, b) => b.price - a.price);
-            break;
-        case 'customer rating':
-            filteredProducts.sort((a, b) => b.rating - a.rating);
             break;
         case 'newest arrivals':
             // Assuming newer products have higher IDs
@@ -257,51 +259,60 @@ function createProductCard(product) {
         </div>
         <div class="product-info">
             <h3 class="product-title">${product.title}</h3>
-            <div class="product-rating" data-rating="${product.rating}" data-reviews="${product.reviews}">
-                ${generateStarRating(product.rating)}
-                <span>(${product.reviews})</span>
-            </div>
             <div class="product-pricing">
-                <span class="current-price">$${product.price.toFixed(2)}</span>
-                ${product.originalPrice > product.price ? 
-                    `<span class="original-price">$${product.originalPrice.toFixed(2)}</span>` : ''}
+                <span class="current-price">₱${product.price.toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                ${product.originalPrice ? `<span class="original-price">₱${product.originalPrice.toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>` : ''}
             </div>
-            <p class="product-description">${getProductDescription(product.title)}</p>
-            <div class="product-stock" data-stock="${product.stockCount}">
+            <div class="product-stock">
                 ${product.inStock ? 
-                    `<span class="in-stock">In Stock</span>` : 
-                    `<span class="out-of-stock">Out of Stock</span>`}
+                    `<span class="in-stock"><i class="fas fa-check-circle"></i> In Stock</span>` : 
+                    `<span class="out-of-stock"><i class="fas fa-times-circle"></i> Out of Stock</span>`}
             </div>
-            <div class="product-actions">
-                <button class="add-to-cart-btn" ${!product.inStock ? 'disabled' : ''}>
-                    Add to Cart
-                </button>
-                <button class="quick-view-btn">
-                    <i class="fas fa-eye"></i> Quick View
-                </button>
-            </div>
+            <button class="add-to-cart-btn" ${!product.inStock ? 'disabled' : ''}>
+                <i class="fas fa-shopping-cart"></i> Add to Cart
+            </button>
         </div>
     `;
 
-    // Add event listeners for the buttons
+    // Add click event for add to cart button
     const addToCartBtn = card.querySelector('.add-to-cart-btn');
-    const quickViewBtn = card.querySelector('.quick-view-btn');
-
-    addToCartBtn.addEventListener('click', () => {
-        if (product.inStock) {
-            addToCart(product.id);
+    addToCartBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const productId = product.id;
+        
+        // Get existing cart or initialize empty array
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // Check if product already in cart
+        const existingItem = cart.find(item => item.id === productId);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                id: productId,
+                name: product.title,
+                price: product.price,
+                image: product.image,
+                quantity: 1
+            });
         }
-    });
-
-    quickViewBtn.addEventListener('click', () => {
-        showQuickView(product.id);
+        
+        // Save updated cart
+        localStorage.setItem('cart', JSON.stringify(cart));
+        window.cart = cart; // Update global cart
+        
+        // Update cart count
+        updateCartCount();
+        
+        // Show success message
+        showNotification(`${product.title} added to cart!`);
     });
 
     return card;
 }
 
 // Helper function to generate star rating HTML
-function generateStarRating(rating) {
+function generateRatingStars(rating) {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;
     let starsHTML = '';
@@ -337,5 +348,14 @@ function getProductDescription(title) {
 document.addEventListener('DOMContentLoaded', () => {
     initializeFilters();
     // Show all products immediately when page loads
-    applyFilters();
+    updateProductsDisplay(catalogProducts);
+    
+    // Update any static prices on the page to PHP
+    const priceElements = document.querySelectorAll('.price, .current-price, .original-price');
+    priceElements.forEach(element => {
+        const price = parseFloat(element.textContent.replace(/[^0-9.-]+/g, ''));
+        if (!isNaN(price)) {
+            element.textContent = `₱${price.toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        }
+    });
 }); 

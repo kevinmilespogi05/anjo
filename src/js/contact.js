@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             // Get form values
@@ -23,55 +23,49 @@ document.addEventListener('DOMContentLoaded', function() {
                 showError('Please enter a valid email address');
                 return;
             }
-            
-            // If validation passes, you can handle the form submission here
-            // For now, we'll just show a success message
-            showSuccess('Message sent successfully!');
-            contactForm.reset();
+
+            try {
+                // Show loading state
+                Swal.fire({
+                    title: 'Sending message...',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Show success message
+                await showSuccess('Message sent successfully!');
+                contactForm.reset();
+            } catch (error) {
+                showError('An error occurred. Please try again.');
+            }
         });
     }
     
-    // Function to show error messages
+    // Function to show error messages using SweetAlert2
     function showError(message) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = message;
-        
-        // Remove any existing error messages
-        const existingError = document.querySelector('.error-message');
-        if (existingError) {
-            existingError.remove();
-        }
-        
-        // Add the new error message
-        const form = document.getElementById('contactForm');
-        form.insertBefore(errorDiv, form.firstChild);
-        
-        // Remove the error message after 3 seconds
-        setTimeout(() => {
-            errorDiv.remove();
-        }, 3000);
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: message,
+            timer: 3000,
+            showConfirmButton: false
+        });
     }
     
-    // Function to show success messages
+    // Function to show success messages using SweetAlert2
     function showSuccess(message) {
-        const successDiv = document.createElement('div');
-        successDiv.className = 'success-message';
-        successDiv.textContent = message;
-        
-        // Remove any existing success messages
-        const existingSuccess = document.querySelector('.success-message');
-        if (existingSuccess) {
-            existingSuccess.remove();
-        }
-        
-        // Add the new success message
-        const form = document.getElementById('contactForm');
-        form.insertBefore(successDiv, form.firstChild);
-        
-        // Remove the success message after 3 seconds
-        setTimeout(() => {
-            successDiv.remove();
-        }, 3000);
+        return Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: message,
+            timer: 1500,
+            showConfirmButton: false
+        });
     }
 }); 

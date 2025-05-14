@@ -55,12 +55,6 @@
                         <span class="total-amount">$0.00</span>
                     </div>
                     <button class="checkout-btn">Proceed to Checkout</button>
-                    <div class="payment-methods">
-                        <i class="fab fa-cc-visa"></i>
-                        <i class="fab fa-cc-mastercard"></i>
-                        <i class="fab fa-cc-amex"></i>
-                        <i class="fab fa-cc-paypal"></i>
-                    </div>
                 </div>
             </div>
 
@@ -73,6 +67,7 @@
         </div>
     </main>
 
+    <script src="../js/utils.js"></script>
     <script src="../js/ecommerce.js"></script>
     <script>
         // Cart page specific JavaScript
@@ -87,6 +82,7 @@
 
             function updateCartDisplay() {
                 const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                window.cart = cart; // Sync with ecommerce.js cart
                 
                 if (cart.length === 0) {
                     cartContent.style.display = 'none';
@@ -110,18 +106,23 @@
                         </div>
                         <div class="item-details">
                             <h3>${item.name}</h3>
-                            <div class="item-price">$${item.price.toFixed(2)}</div>
+                            <div class="item-price">${window.utils.formatPrice(item.price)}</div>
                         </div>
                         <div class="item-quantity">
                             <button class="quantity-btn minus" data-id="${item.id}">-</button>
                             <input type="number" value="${item.quantity}" min="1" data-id="${item.id}">
                             <button class="quantity-btn plus" data-id="${item.id}">+</button>
                         </div>
-                        <div class="item-total">$${(item.price * item.quantity).toFixed(2)}</div>
+                        <div class="item-total">${window.utils.formatPrice(item.price * item.quantity)}</div>
                         <button class="remove-item" data-id="${item.id}">
                             <i class="fas fa-trash"></i>
                         </button>
                     `;
+
+                    // Add click event for remove button
+                    const removeBtn = itemElement.querySelector('.remove-item');
+                    removeBtn.addEventListener('click', () => removeFromCart(item.id));
+                    
                     cartItems.appendChild(itemElement);
                 });
 
@@ -135,17 +136,40 @@
                 const tax = subtotal * 0.1; // 10% tax
                 const total = subtotal + shipping + tax;
 
-                subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-                shippingElement.textContent = `$${shipping.toFixed(2)}`;
-                taxElement.textContent = `$${tax.toFixed(2)}`;
-                totalElement.textContent = `$${total.toFixed(2)}`;
+                subtotalElement.textContent = window.utils.formatPrice(subtotal);
+                shippingElement.textContent = window.utils.formatPrice(shipping);
+                taxElement.textContent = window.utils.formatPrice(tax);
+                totalElement.textContent = window.utils.formatPrice(total);
+            }
+
+            function removeFromCart(itemId) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart = cart.filter(item => item.id.toString() !== itemId.toString());
+                localStorage.setItem('cart', JSON.stringify(cart));
+                window.cart = cart; // Update the cart in ecommerce.js
+                updateCartDisplay();
+                updateCartCount();
+            }
+
+            function updateItemQuantity(itemId, quantity) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const item = cart.find(item => item.id.toString() === itemId.toString());
+                if (item) {
+                    item.quantity = quantity;
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    window.cart = cart; // Update the cart in ecommerce.js
+                    updateCartDisplay();
+                    updateCartCount();
+                }
             }
 
             // Event delegation for cart item interactions
             cartItems.addEventListener('click', (e) => {
-                const target = e.target;
-                const itemId = target.dataset.id;
+                const target = e.target.closest('.quantity-btn, .remove-item');
+                if (!target) return;
 
+                const itemId = target.dataset.id;
+                
                 if (target.classList.contains('remove-item')) {
                     removeFromCart(itemId);
                 } else if (target.classList.contains('quantity-btn')) {
@@ -172,24 +196,6 @@
                     }
                 }
             });
-
-            function removeFromCart(itemId) {
-                let cart = JSON.parse(localStorage.getItem('cart')) || [];
-                cart = cart.filter(item => item.id !== itemId);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartDisplay();
-                updateCartCount();
-            }
-
-            function updateItemQuantity(itemId, quantity) {
-                let cart = JSON.parse(localStorage.getItem('cart')) || [];
-                const item = cart.find(item => item.id === itemId);
-                if (item) {
-                    item.quantity = quantity;
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    updateCartDisplay();
-                }
-            }
 
             // Checkout button handler
             document.querySelector('.checkout-btn').addEventListener('click', () => {

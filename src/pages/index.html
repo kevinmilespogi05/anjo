@@ -47,18 +47,11 @@
           </ul>
           <h3>Price Range</h3>
           <div class="price-range">
-            <input type="range" min="0" max="1000" value="1000" class="price-slider">
+            <input type="range" min="0" max="1000" value="0" class="price-slider">
             <div class="price-inputs">
-              <input type="number" placeholder="Min" class="min-price" min="0" max="1000">
-              <input type="number" placeholder="Max" class="max-price" min="0" max="1000" value="1000">
+              <input type="number" placeholder="Min" class="min-price" min="0" max="1000" value="0">
+              <input type="number" placeholder="Max" class="max-price" min="0" max="1000" value="0">
             </div>
-          </div>
-          <h3>Rating</h3>
-          <div class="rating-filter">
-            <label><input type="checkbox" value="4"> 4★ & Up</label>
-            <label><input type="checkbox" value="3"> 3★ & Up</label>
-            <label><input type="checkbox" value="2"> 2★ & Up</label>
-            <label><input type="checkbox" value="1"> 1★ & Up</label>
           </div>
           <h3>Availability</h3>
           <div class="availability-filter">
@@ -75,7 +68,6 @@
                 <option value="featured">Sort by: Featured</option>
                 <option value="price: low to high">Price: Low to High</option>
                 <option value="price: high to low">Price: High to Low</option>
-                <option value="customer rating">Customer Rating</option>
                 <option value="newest arrivals">Newest Arrivals</option>
                 <option value="best selling">Best Selling</option>
               </select>
@@ -87,8 +79,9 @@
         </div>
       </section>
     </main>
+    <script src="../js/common.js"></script>
+    <script src="../js/utils.js"></script>
     <script src="../js/filters.js"></script>
-    <script src="../js/ecommerce.js"></script>
     <script src="../js/search.js"></script>
   </body>
 </html>

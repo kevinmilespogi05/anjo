@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AfordaShop - Sign Up</title>
     <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <div class="signup">
@@ -35,7 +37,7 @@
                 <div class="signup-form__header">
                     <h1>Create an account</h1>
                     <p>Enter your details below</p>
-                  </div>
+                </div>
               <div class="signup-form">
                 <form class="form" id="signupForm">
                   <div class="form__group">
@@ -48,13 +50,28 @@
                   </div>
                   <div class="form__group">
                     <label class="form__label">Password</label>
-                    <input type="password" class="form__input" name="password" required />
-                    <div class="form__options">
-                      <label class="remember-me">
-                        <input type="checkbox" name="terms" required />
-                        <span>I agree to the Terms of Service and Privacy Policy</span>
-                      </label>
+                    <div class="password-input-wrapper">
+                      <input type="password" class="form__input" name="password" id="password" required />
+                      <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                        <i class="fas fa-eye"></i>
+                      </button>
                     </div>
+                  </div>
+                  <div class="form__group">
+                    <label class="form__label">Confirm Password</label>
+                    <div class="password-input-wrapper">
+                      <input type="password" class="form__input" name="confirmPassword" id="confirmPassword" required />
+                      <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                    </div>
+                    <span id="password-match" class="password-match"></span>
+                  </div>
+                  <div class="form__options">
+                    <label class="remember-me">
+                      <input type="checkbox" name="terms" required />
+                      <span>I agree to the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a></span>
+                    </label>
                   </div>
                   <button type="submit" class="form__submit">Create Account</button>
                   <div class="form__google">
@@ -91,35 +108,39 @@
                 Tapinac Oval Sports Complex, Donor St., East Tapinac, Olongapo,
                 Philippines
               </p>
-              <p>exclusive@gmail.com</p>
-              <p>+88015-88888-9999</p>
+              <p><a href="mailto:exclusive@gmail.com">exclusive@gmail.com</a></p>
+              <p><a href="tel:+88015888889999">+88015-88888-9999</a></p>
             </div>
           </div>
           <div class="footer__section">
             <h3>Account</h3>
             <ul class="footer__links">
-              <li>My Account</li>
-              <li>Login / Register</li>
-              <li>Cart</li>
-              <li>Wishlist</li>
-              <li>Shop</li>
+              <li><a href="account.html">My Account</a></li>
+              <li><a href="login.html">Login / Register</a></li>
+              <li><a href="cart.html">Cart</a></li>
+              <li><a href="wishlist.html">Wishlist</a></li>
+              <li><a href="index.html">Shop</a></li>
             </ul>
           </div>
           <div class="footer__section">
             <h3>Quick Link</h3>
             <ul class="footer__links">
-              <li>Privacy Policy</li>
-              <li>Terms Of Use</li>
-              <li>FAQ</li>
-              <li>Contact</li>
+              <li><a href="#" onclick="showPrivacy()">Privacy Policy</a></li>
+              <li><a href="#" onclick="showTerms()">Terms Of Use</a></li>
+              <li><a href="faq.html">FAQ</a></li>
+              <li><a href="contact.html">Contact</a></li>
             </ul>
           </div>
           <div class="footer__section">
             <h3>Download App</h3>
             <p class="footer__app-text">Save $3 with App New User Only</p>
             <div class="footer__app-images">
-              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/836cee14c62b5e1c952b04cfa608ce7a779d7695?placeholderIfAbsent=true&apiKey=c920ee099cd94450ad47ca730611f9cd" alt="App Store" />
-              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b15e0e550a267d49b344afaf2304b92946b466f1?placeholderIfAbsent=true&apiKey=c920ee099cd94450ad47ca730611f9cd" alt="Google Play" />
+              <a href="#" onclick="downloadIOS()">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/836cee14c62b5e1c952b04cfa608ce7a779d7695?placeholderIfAbsent=true&apiKey=c920ee099cd94450ad47ca730611f9cd" alt="App Store" />
+              </a>
+              <a href="#" onclick="downloadAndroid()">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b15e0e550a267d49b344afaf2304b92946b466f1?placeholderIfAbsent=true&apiKey=c920ee099cd94450ad47ca730611f9cd" alt="Google Play" />
+              </a>
             </div>
           </div>
         </div>
@@ -127,5 +148,253 @@
     </div>
     <script src="../js/common.js"></script>
     <script src="../js/script.js"></script>
+    <script>
+      // Password toggle functionality
+      function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = input.nextElementSibling.querySelector('i');
+        
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          input.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      }
+
+      // Password verification
+      document.getElementById('confirmPassword').addEventListener('input', function() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = this.value;
+        const matchSpan = document.getElementById('password-match');
+        
+        if (confirmPassword === '') {
+          matchSpan.textContent = '';
+          matchSpan.className = 'password-match';
+        } else if (password === confirmPassword) {
+          matchSpan.textContent = 'Passwords match';
+          matchSpan.className = 'password-match match';
+        } else {
+          matchSpan.textContent = 'Passwords do not match';
+          matchSpan.className = 'password-match no-match';
+        }
+      });
+
+      // Form submission
+      document.getElementById('signupForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = {
+          name: this.name.value.trim(),
+          emailOrPhone: this.emailOrPhone.value.trim(),
+          password: this.password.value.trim(),
+          confirmPassword: this.confirmPassword.value.trim(),
+          terms: this.terms.checked
+        };
+
+        // Validate name
+        if (!formData.name) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Name Required',
+            text: 'Please enter your name',
+            confirmButtonColor: '#DB4444'
+          });
+          return;
+        }
+
+        // Validate email/phone
+        if (!formData.emailOrPhone) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Email/Phone Required',
+            text: 'Please enter your email or phone number',
+            confirmButtonColor: '#DB4444'
+          });
+          return;
+        }
+
+        // Validate password
+        if (!formData.password) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Password Required',
+            text: 'Please enter a password',
+            confirmButtonColor: '#DB4444'
+          });
+          return;
+        }
+
+        if (formData.password.length < 8) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Password Too Short',
+            text: 'Password must be at least 8 characters long',
+            confirmButtonColor: '#DB4444'
+          });
+          return;
+        }
+
+        // Add password complexity validation
+        const hasLetter = /[a-zA-Z]/.test(formData.password);
+        const hasNumber = /[0-9]/.test(formData.password);
+        
+        if (!hasLetter || !hasNumber) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Invalid Password Format',
+            text: 'Password must contain at least one letter and one number',
+            confirmButtonColor: '#DB4444'
+          });
+          return;
+        }
+
+        if (formData.password !== formData.confirmPassword) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Password Mismatch',
+            text: 'The passwords you entered do not match',
+            confirmButtonColor: '#DB4444'
+          });
+          return;
+        }
+
+        // Validate terms
+        if (!formData.terms) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Terms & Conditions',
+            text: 'Please agree to the Terms of Service and Privacy Policy to continue',
+            confirmButtonColor: '#DB4444'
+          });
+          return;
+        }
+
+        try {
+          // Show loading state
+          Swal.fire({
+            title: 'Creating your account...',
+            html: 'Please wait while we set up your account',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
+          // Simulate API call
+          await new Promise(resolve => setTimeout(resolve, 1500));
+          
+          // Store user data
+          localStorage.setItem('userData', JSON.stringify({
+            name: formData.name,
+            emailOrPhone: formData.emailOrPhone
+          }));
+
+          // Show success message
+          await Swal.fire({
+            icon: 'success',
+            title: 'Welcome to AfordaShop!',
+            text: 'Your account has been created successfully',
+            timer: 2000,
+            showConfirmButton: false
+          });
+
+          // Redirect to login page
+          window.location.href = 'login.html';
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'An error occurred while creating your account. Please try again.',
+            confirmButtonColor: '#DB4444'
+          });
+        }
+      });
+
+      // Footer link functions
+      function showPrivacy() {
+        alert('Privacy Policy will be displayed here');
+      }
+
+      function showTerms() {
+        alert('Terms of Service will be displayed here');
+      }
+
+      function downloadIOS() {
+        alert('Redirecting to iOS App Store...');
+      }
+
+      function downloadAndroid() {
+        alert('Redirecting to Google Play Store...');
+      }
+    </script>
+    <style>
+      .password-input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 10px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #666;
+      }
+
+      .toggle-password:hover {
+        color: #333;
+      }
+
+      .password-match {
+        display: block;
+        font-size: 0.875rem;
+        margin-top: 5px;
+      }
+
+      .password-match.match {
+        color: #28a745;
+      }
+
+      .password-match.no-match {
+        color: #dc3545;
+      }
+
+      .footer__links a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer__links a:hover {
+        color: #DB4444;
+      }
+
+      .footer__info a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer__info a:hover {
+        color: #DB4444;
+      }
+
+      .remember-me a {
+        color: #DB4444;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .remember-me a:hover {
+        color: #b83333;
+      }
+    </style>
   </body>
 </html>

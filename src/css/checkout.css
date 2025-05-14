@@ -188,60 +188,123 @@
 
 /* Order Summary */
 .order-summary {
-    margin-top: 293px;
-    padding-top: 107px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
 }
 
-.summary-section {
-    margin-bottom: 16px;
+.cart-items {
+    margin-bottom: 1.5rem;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.item-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.item-details {
+    flex: 1;
+}
+
+.item-name {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.item-price {
+    color: var(--color-red);
+    font-weight: 500;
+}
+
+.item-quantity {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.summary-details {
+    padding: 1rem 0;
 }
 
 .summary-row {
     display: flex;
     justify-content: space-between;
-    font-size: 16px;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #666;
+}
+
+.summary-row.total {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #000;
+    margin-top: 0.5rem;
 }
 
 .summary-divider {
-    margin: 16px 0;
-    border: 1px solid var(--color-black);
-    opacity: 0.3;
-}
-
-.summary-total {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 16px;
-    font-size: 16px;
-    font-weight: 500;
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 0.75rem 0;
 }
 
 .payment-method {
-    margin-top: 32px;
-    font-size: 16px;
+    margin: 1.5rem 0;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.payment-option:hover {
+    border-color: var(--color-red);
+}
+
+.payment-option input[type="radio"] {
+    accent-color: var(--color-red);
+}
+
+.payment-option span {
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
 .place-order-btn {
-    margin-top: 32px;
-    background-color: var(--color-red);
-    color: #fafafa;
-    border: none;
-    border-radius: 4px;
-    padding: 16px 48px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
     width: 100%;
-    transition: background-color 0.3s ease;
+    padding: 1rem;
+    background: var(--color-red);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
 .place-order-btn:hover {
-    background-color: #c03939;
-}
-
-.place-order-btn:disabled {
-    background-color: #999;
-    cursor: not-allowed;
+    background: #c13a3a;
 }
 
 /* Error Messages */
@@ -280,5 +343,11 @@
     .form-input {
         height: 45px;
         font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .order-summary {
+        margin-top: 2rem;
     }
 } 
